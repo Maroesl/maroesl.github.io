@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>贪吃蛇</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="贪吃蛇">
+    <meta name="Description">
+    <style type="text/css">
+        * {
+            margin: 0;
+        }
+
+        .map {
+            margin: 100px auto;
+            height: 600px;
+            width: 900px;
+            background: #00D0FF;
+            border: 10px solid #8f8f8f;
+            border-radius: 8px;
+        }
+
+        .btn {
+            margin: 0 auto;
+
+        }
+
+        #startButton,
+        #pauseButton {
+            width: 80px;
+            height: 50px;
+            background-color: aquamarine;
+            border: none;
+            border-radius: 20px;
+            color: orange;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+    <div class="btn">
+        <button id="startButton">开始游戏</button>
+        <button id="pauseButton">暂停游戏</button>
+    </div>
+
+    <div class="map">
+        <canvas id="canvas" height="600" width="900">
+        </canvas>
+    </div>
+
+    <script src="贪吃蛇.js">
+
+    </script>
+</body>
+
+</html>

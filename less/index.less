@@ -1,0 +1,144 @@
+//  body {
+//      background-color: #1e003c;
+//      overflow: hidden;
+//      color: wheat;
+//  }
+
+//  /* 定义雪花的样式 */
+//  .snowflake {
+//      width: 10px;
+//      height: 10px;
+//      background-color: white;
+//      border-radius: 50%;
+//      position: absolute;
+//      top: -10px;
+//  }
+
+//  /* 定义雪花落下的动画 */
+//  @keyframes snowfall {
+//      0% {
+//          transform: translate3d(0, 0, 0);
+//          opacity: 0;
+//      }
+
+//      50% {
+//          opacity: 1;
+//      }
+
+//      100% {
+//          transform: translate3d(0, 100vh, 0);
+//          opacity: 0;
+//      }
+//  }
+
+body {
+    background-color: #1e003c;
+    color: wheat;
+}
+
+.ovo-right-cont {
+    font-family: 'Qcent';
+    text-align: center;
+    float: right;
+    width: 30vw;
+    height: 100vh;
+
+    background-color: rgba(0, 255, 255, 0.158);
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    a {
+        padding: 10px;
+        border-radius: 8px;
+
+        &:hover {
+            color: #1f2a5b;
+            background-color: wheat;
+            transition: all 0.8s;
+        }
+    }
+
+    .ovo-via {
+        margin-top: 120px;
+        margin-bottom: 60px;
+
+        img {
+            width: 30%;
+            height: auto;
+            border-radius: 50%;
+        }
+    }
+
+    .ovo-via-name {
+        font-size: 60px;
+    }
+
+    // 分类
+    .ovo-via-name-list {
+        margin-top: 100px;
+        font-size: 72px;
+        text-align: left;
+        margin-left: 30px;
+        margin-bottom: 20px;
+    }
+
+    // 列表内容
+    .ovo-via-cont-list {
+        .ovo-via-list {
+            font-size: 40px;
+
+            >div {
+                margin-top: 40px;
+            }
+        }
+    }
+
+
+}
+
+.ovo-left-cont {
+    width: 69vw;
+    overflow: hidden;
+    font-family: Qcent;
+
+    main {
+        .ovo-main-page {
+            .h1 {
+                margin: 80px;
+                font-size: 80px;
+            }
+
+            >.row {
+                >a {
+                    text-align: center;
+
+                    &:hover .ovo-main-page-title {
+                        color: #25003d;
+                        background-color: wheat;
+                        transition: all 0.8s;
+                    }
+
+                    .ovo-main-page-title {
+                        font-size: 45px;
+                        margin: 50px 0;
+                        display: inline-block;
+                        padding: 10px;
+                    }
+
+                    img {
+                        width: 80%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .ovo-right-cont {
+        height: 100%;
+    }
+
+
+}
