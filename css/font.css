@@ -1,0 +1,82 @@
+@font-face {
+    font-family: 'Qcent';
+    src: url('../font/Qcent.ttf') format('woff2'),
+        url('../font/Qcent.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Mxieti';
+    src: url('../font/Mxieti.ttf') format('woff2'),
+        url('../font/Mxieti.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Myinying';
+    src: url('../font/Myinying.ttf') format('woff2'),
+        url('../font/Myinying.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Mhaibao';
+    src: url('../font/Mhaibao.otf') format('woff2'),
+        url('../font/Mhaibao.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'Mbaozhi';
+    src: url('../font/Mbaozhi.otf') format('woff2'),
+        url('../font/Mbaozhi.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'QKF';
+    src: url('../font/QKF.otf') format('woff2'),
+        url('../font/QKF.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Qcent2';
+    src: url('../font/Qcent2.ttf') format('woff2'),
+        url('../font/Qcent2.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'Myouqi';
+    src: url('../font/Myouqi.ttf') format('woff2'),
+        url('../font/Myouqi.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'Mxiangsu';
+    src: url('../font/Mxiangsu.ttf') format('woff2'),
+        url('../font/Mxiangsu.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Mloukong';
+    src: url('../font/Mloukong.ttf') format('woff2'),
+        url('../font/Mloukong.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

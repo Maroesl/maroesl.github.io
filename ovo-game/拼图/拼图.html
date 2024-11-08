@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拼图</title>
+    <style>
+        .orgin {
+            width: 200px;
+            height: 200px;
+            float: left;
+            margin: 50px;
+            /* background-color: #ff0000; */
+        }
+
+        .orgin img {
+            width: 100%;
+        }
+
+        ul.stage {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 300px;
+            height: 300px;
+            background-color: rgb(240, 240, 240);
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            /* justify-content: space-evenly; */
+            padding: 10px;
+            position: relative;
+            float: left;
+            margin: 50px;
+        }
+
+        ul.stage li {
+            width: 96px;
+            height: 96px;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 2px;
+            transition: all 0.3s;
+            border-radius: 5px;
+
+            /* background-color: #ff0000; */
+        }
+
+        ul.stage li.active {
+            opacity: 0.5;
+        }
+
+        ul.stage li img {
+            width: 300%;
+            height: 300%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="orgin">
+        <img src="OIP-C.jpeg" alt="" />
+    </div>
+    <div class="text">
+        <div class="txt"><b>拖动圆点控制放大倍率</b></div>
+        <input type="range" min="2" max="10" value="2" />
+    </div>
+    <ul class="stage">
+        <li style="width: 100%;height: 100%;"><img style="width: 100%; height: 100%;" src="OIP-C.jpeg" alt="" />
+        </li>
+
+    </ul>
+
+
+
+    <script>
+        var stage = document.querySelector(".stage");
+        var list = stage.querySelector("li");
+        var lis = stage.querySelectorAll("li");
+
+
+        // 放大倍率的控制
+        var txt = document.querySelector(".txt");
+        var input = document.querySelector("input");
+        var Fixedvalue = 100;
+        var arr = [];
+
+
+
+        input.oninput = function () {
+            txt.innerText = '放大倍数：' + this.value;
+
+
+            for (let p = 0; p < lis.length; p++) {
+                stage.removeChild(stage.children[0]);
+
+            }
+            arr = [];
+
+
+            for (var i = 0; i < input.value * input.value; i++) {
+                arr.push(i);
+            }
+            arr.sort(() => Math.random() - 0.5);
+            for (let j = 0; j < input.value * input.value; j++) {
+
+                var newli = document.createElement("li");
+                newli.dataset.o = j;
+                newli.dataset.c = arr[j];
+                newli.style.width = (300 / input.value - 2) + "px";
+                newli.style.height = (300 / input.value - 2) + "px";
+
+                newli.style.top = Math.floor(newli.dataset.c / input.value) * (300 / input.value) + 10 + "px";
+                newli.style.left = (newli.dataset.c % input.value) * (300 / input.value) + 10 + "px";
+
+
+
+                var newimg = document.createElement("img");
+                newimg.src = "OIP-C.jpeg";
+                newimg.style.width = Fixedvalue * input.value + "%";
+                newimg.style.height = Fixedvalue * input.value + "%";
+                newimg.style.top = Math.floor(j / input.value) * -((300 / input.value) - 4) + "px";
+                newimg.style.left = (j % input.value) * -((300 / input.value) - 4) + "px";
+
+                newli.appendChild(newimg);
+                stage.appendChild(newli);
+
+            } lis = stage.querySelectorAll("li");
+        };
+
+
+
+
+
+
+        var clickedLis = [];
+        stage.onclick = function (event) {
+            var target = event.target;
+            // 如果点击图片 那么就找img的父级
+            if (target.tagName == "IMG") {
+                target = target.parentNode;
+            }
+            // console.log(target);
+            // 如果是li就...
+            if (target.tagName === "LI") {
+                // 获取当前的 位置序号
+                // console.log(target.dataset.c);
+                clickedLis.push(target);
+                target.classList.add("active");
+
+                // 判断长度是2两个交换
+                if (clickedLis.length === 2) {
+                    setTimeout(() => {
+                        // 交换data-c
+                        var tmp = clickedLis[0].dataset.c;
+                        clickedLis[0].dataset.c = clickedLis[1].dataset.c;
+                        clickedLis[1].dataset.c = tmp;
+                        // 重新计算交换完成的li的位置
+                        clickedLis.forEach((li) => {
+                            li.style.top = Math.floor(li.dataset.c / input.value) * (300 / input.value) + 10 + "px";
+                            li.style.left = (li.dataset.c % input.value) * (300 / input.value) + 10 + "px";
+                        });
+
+                        // 等待过渡完成之后
+
+                        // =================
+                        // 判断是否拼图完成
+                        // 遍历所有li 判断是不是 每一个都 data-o 和 data-c 相等
+                        var isFinished = Array.prototype.slice.call(lis).every((li) => {
+                            return li.dataset.o == li.dataset.c;
+                        });
+
+                        setTimeout(() => {
+                            // 如果完成就提示
+                            if (isFinished) {
+                                alert("拼图完成");
+                            }
+                        }, 300);
+
+                        // ==============
+
+
+                        clickedLis[0].classList.remove("active");
+                        clickedLis[1].classList.remove("active");
+                        clickedLis = [];
+                    }, 300);
+
+                }
+            }
+        };
+    </script>
+
+
+</body>
+
+</html>

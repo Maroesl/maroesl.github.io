@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flappy Bird H5</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+  <script>
+    // 获取canvas元素和绘图上下文
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // 游戏区域的宽度和高度
+    const GAME_WIDTH = canvas.width;
+    const GAME_HEIGHT = canvas.height;
+
+    // 小鸟的类
+    class Bird {
+      constructor() {
+        this.x = 50;
+        this.y = GAME_HEIGHT / 2;
+        this.radius = 10;
+        this.speed = 0;
+        this.gravity = 0.5;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+      }
+
+      update() {
+        this.speed += this.gravity;
+        this.y += this.speed;
+      }
+
+      jump() {
+        this.speed = -5;
+      }
+    }
+
+    // 管道的类
+    class Pipe {
+      constructor() {
+        this.x = GAME_WIDTH;
+        this.width = 50;
+        this.gap = 150;
+        this.topHeight = Math.random() * (GAME_HEIGHT - this.gap - 100) + 50; // 确保管道在小鸟上方有足够的空间
+        this.bottomHeight = GAME_HEIGHT - (this.topHeight + this.gap);
+        this.speed = 2;
+      }
+
+      draw() {
+        // 绘制上管道
+        ctx.fillStyle = 'green';
+        ctx.fillRect(this.x, 0, this.width, this.topHeight);
+
+        // 绘制下管道
+        ctx.fillRect(this.x, GAME_HEIGHT - this.bottomHeight, this.width, this.bottomHeight);
+      }
+
+      update() {
+        this.x -= this.speed;
+      }
+
+      offScreen() {
+        return this.x + this.width < 0;
+      }
+    }
+
+    // 游戏类
+    class Game {
+      constructor() {
+        this.bird = new Bird();
+        this.pipes = [new Pipe()];
+        this.score = 0;
+        this.gameOver = false;
+        this.scoreAdded = false; // 确保这个变量在类中定义
+      }
+
+      draw() {
+        // 清空画布
+        ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+        // 绘制小鸟
+        this.bird.draw();
+
+        // 绘制管道
+        this.pipes.forEach(pipe => pipe.draw());
+
+        // 绘制分数
+        ctx.font = "30px Arial";
+        ctx.fillStyle = 'black';
+        ctx.fillText(`Score: ${this.score}`, 10, 30);
+
+        // 游戏结束提示
+        if (this.gameOver) {
+          ctx.font = "40px Arial";
+          ctx.fillStyle = 'red';
+          ctx.fillText("Game Over!", GAME_WIDTH / 2 - 100, GAME_HEIGHT / 2);
+        }
+      }
+
+      update() {
+        if (this.gameOver) return;
+
+        this.bird.update();
+
+        this.pipes.forEach(pipe => pipe.update());
+
+        // 检查小鸟与管道的碰撞
+        if (this.checkCollision()) {
+          this.gameOver = true;
+        }
+
+        // 检查小鸟是否穿过管道并计分
+        this.pipes.forEach(pipe => {
+          if (!pipe.offScreen() && pipe.x + pipe.width < this.bird.x && !this.scoreAdded) {
+            this.score++;
+            this.scoreAdded = true;
+          }
+        });
+
+        // 移除已经移出屏幕的管道并添加新管道
+        if (this.pipes[0].offScreen()) {
+          this.pipes.shift();
+          this.pipes.push(new Pipe());
+          this.scoreAdded = false;
+        }
+      }
+
+      checkCollision() {
+        const bird = this.bird;
+
+        // 检查小鸟是否碰到上下边界
+        if (bird.y - bird.radius < 0 || bird.y + bird.radius > GAME_HEIGHT) {
+          return true;
+        }
+
+        // 检查小鸟与管道的碰撞
+        for (let pipe of this.pipes) {
+          if (bird.x + bird.radius > pipe.x && bird.x - bird.radius < pipe.x + pipe.width &&
+            (bird.y - bird.radius < pipe.topHeight || bird.y + bird.radius > GAME_HEIGHT - pipe.bottomHeight)) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      handleInput(event) {
+        if (event.type === 'click' || event.type === 'keydown' && event.key === ' ') { // 支持点击和空格键
+          if (!this.gameOver) {
+            this.bird.jump();
+          } else {
+            this.resetGame();
+          }
+        }
+      }
+
+      resetGame() {
+        this.bird = new Bird();
+        this.pipes = [new Pipe()];
+        this.score = 0;
+        this.gameOver = false;
+        this.scoreAdded = false;
+      }
+    }
+
+    // 创建游戏实例并启动游戏循环
+    const game = new Game();
+
+    function gameLoop() {
+      game.draw();
+      game.update();
+
+      if (!game.gameOver) {
+        requestAnimationFrame(gameLoop);
+      }
+    }
+
+    // 添加点击事件监听来控制小鸟跳跃
+    document.addEventListener('click', game.handleInput);
+
+    // 添加键盘事件监听来控制小鸟跳跃
+    document.addEventListener('keydown', game.handleInput);
+
+    // 启动游戏循环
+    gameLoop();
+  </script>
+</body>
+
+</html>
