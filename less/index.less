@@ -32,7 +32,7 @@
 //  }
 
 body {
-    background-color: #1e003c;
+    background-color: #0d3e52ce;
     color: wheat;
 }
 
@@ -112,6 +112,16 @@ body {
             >.row {
                 >a {
                     text-align: center;
+
+                    &:hover {
+                        transform: translateY(-10px);
+                        transition: all 0.5s;
+                    }
+
+                    &:hover img {
+                        box-shadow: 10px 10px 5px black;
+
+                    }
 
                     &:hover .ovo-main-page-title {
                         color: #25003d;
