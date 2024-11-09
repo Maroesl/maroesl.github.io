@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>放大镜</title>
+    <style>
+        .box {
+            width: 500px;
+            height: 600px;
+            margin-left: 50px;
+            margin-top: 50px;
+            border: 1px solid black;
+        }
+
+        .box_big {
+            width: 500px;
+            height: 500px;
+            background-color: rgb(16, 136, 241);
+            position: relative;
+            cursor: zoom-in;
+        }
+
+        .box_big span {
+            display: block;
+            width: 250px;
+            height: 250px;
+            background-image: url('./mask-bg.png');
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+
+        .first_img {
+            width: 100%;
+            height: 100%;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .first_img img {
+            width: 100%;
+        }
+
+        .box_small .box_img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .box_small img {
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        .box_small {
+            width: 500px;
+            height: 100px;
+            /* background-color: aquamarine; */
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+
+        }
+
+        .preview {
+            width: 500px;
+            height: 500px;
+            overflow: hidden;
+            position: absolute;
+            top: 130px;
+            left: 625px;
+        }
+
+        .preview img {
+            width: 200%;
+            position: absolute;
+            top: -500px;
+            left: -500px;
+        }
+
+        .noactive {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .text {
+            margin-left: 250px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="text">
+        <div class="txt"><b>拖动圆点控制放大倍率</b></div>
+        <input type="range" min="2" max="10" value="2" />
+    </div>
+
+    <div class="box">
+        <div class="box_big">
+            <div class="first_img active"><img src="banner1.jpg" alt=""></div>
+            <div class="first_img"><img src="banner2.jpg" alt=""></div>
+            <div class="first_img"><img src="banner3.jpg" alt=""></div>
+            <div class="first_img"><img src="banner4.jpg" alt=""></div>
+            <div class="first_img"><img src="banner5.jpg" alt=""></div>
+            <span class="move"></span>
+        </div>
+        <div class="box_small">
+            <div class="box_img" index="0"><img src="banner1.jpg" alt=""></div>
+            <div class="box_img" index="1"><img src="banner2.jpg" alt=""></div>
+            <div class="box_img" index="2"><img src="banner3.jpg" alt=""></div>
+            <div class="box_img" index="3"><img src="banner4.jpg" alt=""></div>
+            <div class="box_img" index="4"><img src="banner5.jpg" alt=""></div>
+        </div>
+        <div class="preview">
+            <img src="./banner1.jpg" alt="" />
+        </div>
+    </div>
+    <script>
+        // 图片的切换
+        var tabs = document.getElementsByClassName("box_small")[0].getElementsByTagName("div");
+        var tabschange = document.getElementsByClassName("box_big")[0].getElementsByTagName("div");
+        var tabschangeto = document.getElementsByClassName("preview")[0].getElementsByTagName("img");
+        var preview = document.querySelector(".preview img");
+        // 放大镜的模块
+        var main = document.querySelector(".box_big");
+        var move = document.querySelector(".move");
+        // 放大倍率的控制
+        var txt = document.querySelector(".txt");
+        var input = document.querySelector("input");
+
+        // 图片的切换
+
+
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].onclick = function () {
+                for (var j = 0; j < tabschange.length; j++) {
+                    if (j == this.getAttribute("index")) {
+                        tabschange[j].classList.add("active"); preview.src = `./banner${j + 1}.jpg`
+                    } else {
+                        tabschange[j].classList.remove("active");
+                    }
+                }
+                for (var m = 0; m < tabschangeto.length; m++) {
+                    if (m == this.getAttribute("index")) {
+                        tabschangeto[m].classList.add("active");
+                    } else {
+                        tabschangeto[m].classList.remove("active");
+                    }
+                }
+
+            };
+
+        }
+
+
+        // 放大倍率的控制
+
+        input.oninput = function () {
+            txt.innerText = this.value;
+            move.style.width = 500 / this.value + 'px';
+            move.style.height = 500 / this.value + 'px';
+            move.style.width = 500 / this.value + 'px';
+            move.style.height = 500 / this.value + 'px';
+            preview.style.width = this.value * 100 + '%';
+        };
+
+
+        // 放大镜的模块
+
+        main.onmousemove = function (event) {
+            var x = event.clientX - main.offsetLeft;
+            var y = event.clientY - main.offsetTop;
+
+            // 鼠标的位置
+
+            // mask左上角
+            moveX = x - 500 / (input.value * 2);
+            moveY = y - 500 / (input.value * 2);
+
+            if (moveX < 0) {
+                moveX = 0;
+            }
+            if (moveX > main.offsetWidth - move.offsetWidth) {
+                moveX = main.offsetWidth - move.offsetWidth;
+            }
+            if (moveY < 0) {
+                moveY = 0;
+            }
+            if (moveY > main.offsetHeight - move.offsetHeight) {
+                moveY = main.offsetHeight - move.offsetHeight;
+            }
+
+            move.style.left = moveX + "px";
+            move.style.top = moveY + "px";
+
+
+            // move左上角的位置
+
+            preview.style.left = -moveX * input.value + "px";
+            preview.style.top = -moveY * input.value + "px";
+        };
+    </script>
+</body>
+
+</html>
