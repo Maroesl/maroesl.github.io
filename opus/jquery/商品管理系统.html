@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jQuery.min.js"></script>
+    <style>
+        /* CSS样式 */
+        img {
+            width: 100px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        table {
+            margin-top: 50px;
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #eaeaea;
+        }
+
+        .img {
+            width: 150px;
+        }
+
+        .deleteRowBtn {
+            color: red;
+        }
+
+        #productForm {
+            background: url('../../../../../imgs/11.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            border: 2px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            opacity: 0.8;
+ 
+        }
+
+        #productForm input {
+            margin-right: 20px;
+            width: 200px;
+            height: 30px;
+        }
+
+        button[type="button"] {
+            margin-right: 30px;
+            width: 80px;
+            height: 35px;
+            border: none;
+            border-radius: 8px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <form id="productForm">
+        名称: <input type="text" id="name">
+        价格: <input type="text" id="price">
+        库存: <input type="text" id="stock">
+        图片: <input type="file" accept="image/*" id="imageInput">
+        <button type="button" id="addButton">添加商品</button>
+        <input type="text" id="searchInput" placeholder="搜索商品名称">
+    </form>
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th class="name">名称</th>
+                <th class="price">价格</th>
+                <th class="stock">库存</th>
+                <th class="img">图片</th>
+                <th class="do">操作</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div>Total Stock: <span id="totalStock">0</span></div>
+    <script>
+        $(document).ready(function () {
+            var rowCount = 0; // 初始化行数计数器
+
+            // 添加商品按钮点击事件
+            $('#addButton').click(function () {
+                var name = $('#name').val();
+                var price = $('#price').val();
+                var stock = parseInt($('#stock').val(), 10); // 将库存转换为整数
+                var fileInput = document.getElementById('imageInput');
+                var file = fileInput.files[0];
+
+                rowCount++; // 更新行数计数器
+
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var imgHTML = '<img src="' + e.target.result + '" alt="" class="img">';
+                        var deleteButton = '<button class="deleteRowBtn">X</button>';
+                        // 在表格中添加一行新数据，包括图片和删除按钮
+                        $('#productTable tbody').append('<tr><td>' + name + '</td><td>' + price + '</td><td>' + stock + '</td><td>' + imgHTML + '</td><td>' + deleteButton + '</td></tr>');
+                        // 为新添加的删除按钮绑定点击事件
+                        $('.deleteRowBtn').last().click(function () {
+                            rowCount--; // 更新行数计数器
+                            $('#totalStock').text(rowCount); // 显示更新后的行数
+                            $(this).closest('tr').remove();
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    var deleteButton = '<button class="deleteRowBtn">X</button>';
+                    // 如果没有选择图片，也添加一行数据，但图片部分为空，并添加删除按钮
+                    $('#productTable tbody').append('<tr><td>' + name + '</td><td>' + price + '</td><td>' + stock + '</td><td></td><td>' + deleteButton + '</td></tr>');
+                    // 为新添加的删除按钮绑定点击事件
+                    $('.deleteRowBtn').last().click(function () {
+                        rowCount--; // 更新行数计数器
+                        $('#totalStock').text(rowCount); // 显示更新后的行数
+                        $(this).closest('tr').remove();
+                    });
+                }
+
+                // 清空输入框
+                $('#name').val('');
+                $('#price').val('');
+                $('#stock').val('');
+                $('#imageInput').val('');
+
+                $('#totalStock').text(rowCount); // 显示更新后的行数
+            });
+
+            // 搜索输入框按键抬起事件
+            $('#searchInput').keyup(function () {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#productTable tbody tr').each(function () {
+                    var productName = $(this).find('td:first-child').text().toLowerCase();
+                    if (productName.indexOf(searchTerm) !== -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

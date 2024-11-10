@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		ul li {
+			list-style: none;
+		}
+
+		#main {
+			width: 100%;
+			height: 260px;
+			margin: 40px 180px;
+		}
+
+		.top {
+			width: 100%;
+		}
+
+		#main ul li {
+			width: 200px;
+			height: 260px;
+			float: left;
+			position: relative;
+		}
+
+		#main ul li div {
+			width: 100%;
+			height: 260px;
+		}
+
+		#main ul li div.des {
+			position: absolute;
+			left: 0;
+			top: 0;
+			background: rgba(0, 0, 0, .3);
+
+		}
+
+		#main ul li div.des h4 {
+			color: #FFF;
+			font-size: 30px;
+			padding: 30px;
+			width: 30px;
+			margin: 0 auto;
+
+		}
+	</style>
+	<script src="jQuery.min.js"></script>
+
+</head>
+
+<body>
+	<div id="main">
+		<ul>
+			<li>
+				<div class="des">
+					<h4>园林酒店</h4>
+				</div>
+				<div style="background: url(../../img/bg/bg1.png) center;"></div>
+			</li>
+			<li>
+				<div class="des">
+					<h4>设计师酒店</h4>
+				</div>
+				<div style="background: url(../../img/bg/bg2.png) center;"></div>
+			</li>
+			<li>
+				<div class="des">
+					<h4>青年旅社</h4>
+				</div>
+				<div style="background: url(../../img/bg/bg3.png) center;"></div>
+			</li>
+			<li>
+				<div class="des">
+					<h4>特色客栈</h4>
+				</div>
+				<div style="background: url(../../img/bg/bg4.png) center;"></div>
+			</li>
+			<li>
+				<div class="des">
+					<h4>海岛酒店</h4>
+				</div>
+				<div style="background: url(../../img/bg/bg5.png) center;"></div>
+			</li>
+			<li>
+				<div class="des">
+					<h4>海外温泉</h4>
+				</div>
+				<div style="background: url(../../img/bg/bg6.png) center;"></div>
+			</li>
+		</ul>
+	</div>
+	<script>
+
+
+
+
+		var $li = $('li');
+		var $des = $('.des');
+		$li.mouseover(function () {
+			$(this).stop().animate({
+				width: 400
+			}, 500);
+			
+			$(this).siblings().stop().animate({
+				width: 160
+			}, 500);
+			$(this).find('.des').hide();
+		});
+		$li.mouseout(function () {
+			$(this).find('.des').show();
+		});
+
+	</script>
+</body>
+
+</html>
