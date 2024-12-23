@@ -13,7 +13,7 @@ var score = 0; // 初始化分数为0
 function drawtable() { // 画地图的函数
     ctx.clearRect(0, 0, 900, 600); // 清除画布重新绘制
     for (var i = 0; i < 60; i++) { // 画竖线
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = "#e2e2e2";
         ctx.beginPath();
         ctx.moveTo(15 * i, 0);
         ctx.lineTo(15 * i, 600);
@@ -21,7 +21,7 @@ function drawtable() { // 画地图的函数
         ctx.stroke();
     }
     for (var j = 0; j < 40; j++) { // 画横线
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = "#e2e2e2";
         ctx.beginPath();
         ctx.moveTo(0, 15 * j);
         ctx.lineTo(900, 15 * j);
@@ -30,15 +30,15 @@ function drawtable() { // 画地图的函数
     }
 
     for (var k = 0; k < snakeCount; k++) { // 画蛇的身体
-        ctx.fillStyle = "#000";
+        ctx.fillStyle = "#8A2BE2";
         if (k == snakeCount - 1) {
-            ctx.fillStyle = "red"; // 蛇头的颜色与身体区分开
+            ctx.fillStyle = "#FF1493 "; // 蛇头的颜色与身体区分开
         }
         ctx.fillRect(snake[k].x, snake[k].y, 15, 15);
     }
 
     // 绘制食物
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "red";
     ctx.fillRect(foodx, foody, 15, 15);
     ctx.fill();
 
