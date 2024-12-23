@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script src="https://v2.cn.vuejs.org/js/vue.js"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.min.js"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>网易云歌曲查询器</p>
+        <input type="text" v-model="question" @keyup.enter="search" />
+        <div class="box" style="color: rgb(81, 154, 209)" v-show="loading">loading...</div>
+        <br />
+        <mark style="background-color: rgb(150, 132, 199);">{{tips}}</mark>
+    
+        <hr />
+        <section v-if="result">
+            <ol>
+                <li v-for="song in sortedSongs" :key="song.id">{{ song.name }}</li>
+            </ol>
+        </section>
+    </div>
+    
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                question: "",
+                result: null,
+                loading: false,
+            },
+    
+            computed: {
+                tips: function () {
+                    return this.question ? "搜索结果" : "请输入你要查询的歌曲";
+                },
+                sortedSongs: function () {
+                    if (this.result && this.result.songs) {
+                        // 先对歌曲数组进行排序，然后返回排序后的数组
+                        return this.result.songs
+                            .slice() // 复制数组以避免直接修改原数组
+                            .sort((a, b) => a.name.localeCompare(b.name)); // 按照歌曲名称进行排序
+                    }
+                    return [];
+                }
+            },
+    
+            methods: {
+                search: function () {
+                    if (this.question) {
+                        this.loading = true;
+                        this.debouncedGetAnswer(this.question);
+                    }
+                },
+                getAnswer: function (question) {
+                    axios
+                        .get("https://apis.netstart.cn/music/search", {
+                            // https://apis.netstart.cn/music/search?keywords=
+                            params: {
+                                keywords: question,
+                            },
+                        })
+                        .then((response) => {
+                            console.log("=====", response.data, this);
+                            this.result = response.data.result;
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        });
+                },
+            },
+            created: function () {
+                this.debouncedGetAnswer = _.debounce(this.getAnswer, 500);
+            },
+            watch: {
+                question: function (n, o) {
+                    if (n) {
+                        this.loading = true;
+                        this.debouncedGetAnswer(n);
+                    }
+                },
+            },
+        });
+    </script>
+
+</body>
+
+</html>
