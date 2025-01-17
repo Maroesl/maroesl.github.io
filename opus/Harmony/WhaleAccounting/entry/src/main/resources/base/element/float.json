@@ -1,0 +1,36 @@
+{
+  "float": [
+    {
+      "name": "search_padding",
+      "value": "12vp"
+    },
+    {
+      "name": "bottom_icon_size_sm",
+      "value": "24vp"
+    },
+    {
+      "name": "bottom_icon_size_lg",
+      "value": "32vp"
+    },
+    {
+      "name": "bottom_title_sm",
+      "value": "10fp"
+    },
+    {
+      "name": "bottom_title_lg",
+      "value": "12fp"
+    },
+    {
+      "name": "bottom_title_margin",
+      "value": "2vp"
+    },
+    {
+      "name": "bottom_row_height",
+      "value": "56vp"
+    },
+    {
+      "name": "bottom_row_padding",
+      "value": "12vp"
+    }
+  ]
+}

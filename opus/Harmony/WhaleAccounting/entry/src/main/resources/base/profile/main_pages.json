@@ -1,0 +1,11 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/AccountingPage",
+    "pages/LoginPage",
+    "pages/WalletPage",
+    "pages/Today",
+    "pages/MePage"
+
+  ]
+}
